@@ -5,9 +5,8 @@ $storage = new \Cookies\Model\Storage();
 
 while (fscanf(STDIN, '%s', $input) === 1) {
     if (is_numeric($input)) {
-        $cookie = new \Cookies\Model\Cookie($input);
-        $storage->add($cookie);
+        $storage->add($input);
     } else {
-        fprintf(STDOUT, "%d\n", $storage->retrieveACookie()->getDiameter());
+        fprintf(STDOUT, "%d\n", $storage->get());
     }
 }

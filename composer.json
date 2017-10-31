@@ -1,0 +1,24 @@
+{
+    "name": "weverson/cookies",
+    "description": "Programming Aptitude Test One",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Weverson Cachinsky",
+            "email": "weversoncachinsky@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cookies\\":"src/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.3"
+    }
+}

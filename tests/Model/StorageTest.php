@@ -23,31 +23,34 @@ class StorageTest extends TestCase
         $diameterList = [1, 2, 3, 4];
 
         foreach ($diameterList as $diameter) {
-            $storage->add(new Cookie($diameter));
+            $storage->add($diameter);
         }
 
-        $this->assertEquals(3, $storage->retrieveACookie()->getDiameter());
-        $this->assertEquals(2, $storage->retrieveACookie()->getDiameter());
-        $this->assertEquals(4, $storage->retrieveACookie()->getDiameter());
-        $this->assertEquals(1, $storage->retrieveACookie()->getDiameter());
+        $this->assertEquals(3, $storage->get());
+        $this->assertEquals(2, $storage->get());
+        $this->assertEquals(4, $storage->get());
+        $this->assertEquals(1, $storage->get());
     }
 
     public function testStress()
     {
         $storage = new Storage();
-        $diameterList = range(1, 300000, 500);
+        $diameterList = range(1, 300000000, 500);
 
         foreach ($diameterList as $diameter) {
-            $storage->add(new Cookie($diameter));
+            $storage->add($diameter);
+        }
+        foreach ($diameterList as $diameter) {
+            $storage->get();
         }
 
-        $expectation = fopen(__DIR__ . '/StorageTest/stressOutput.txt', 'r');
-
-        while (fscanf($expectation, '%d', $median) === 1) {
-            $this->assertEquals($median, $storage->retrieveACookie()->getDiameter());
-        }
-
-        fclose($expectation);
+//        $expectation = fopen(__DIR__ . '/StorageTest/stressOutput.txt', 'r');
+//
+//        while (fscanf($expectation, '%d', $median) === 1) {
+//            $this->assertEquals($median, $storage->retrieveACookie()->getDiameter());
+//        }
+//
+//        fclose($expectation);
     }
 
     /**
@@ -59,8 +62,8 @@ class StorageTest extends TestCase
     {
         $storage = new Storage();
 
-        $storage->add(new Cookie($input));
-        $this->assertEquals($output, $storage->retrieveACookie()->getDiameter());
+        $storage->add($input);
+        $this->assertEquals($output, $storage->get());
     }
 
     /**
@@ -74,5 +77,20 @@ class StorageTest extends TestCase
             [3, 3],
             [4, 4],
         ];
+    }
+
+    public function testOne()
+    {
+        $inputFile = fopen(__DIR__ . '/StorageTest/cookieselection.07.in', 'r');
+
+        $storage = new Storage();
+
+        while (fscanf($inputFile, '%s', $input) === 1) {
+            if (is_numeric($input)) {
+                $storage->add($input);
+            } else {
+                fprintf(STDOUT, "%d\n", $storage->get());
+            }
+        }
     }
 }
